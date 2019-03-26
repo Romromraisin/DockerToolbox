@@ -5,9 +5,8 @@
 #PARAMETERS
 #Registry docker host IP
 IP=$1
-USERNAME=registry
 
-yum update
+USERNAME=registry
 
 #Install base packages
 yum install \
@@ -20,7 +19,7 @@ yum install \
 #[ v3_ca ]
 # Add this line, Change IP by register host IP
 #subjectAltName=IP:10.2.15.10
-sed -i.bak '/\[ v3_ca \]/a subjectAltName=IP:$IP' /etc/pki/tls/openssl.cnf
+sed -i.bak "/\[ v3_ca \]/a subjectAltName=IP:$IP" /etc/pki/tls/openssl.cnf
 
 #Gen certs and store them locally
 mkdir -p /certs
@@ -42,7 +41,7 @@ service docker reload
 
 #Setting up authentification
 #Random password
-PASSWORD="#$(openssl rand -base64 32)"
+PASSWORD=$(/bin/openssl rand -base64 32)
 mkdir /auth
 #Generate password file
 docker run \
