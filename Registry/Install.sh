@@ -4,7 +4,8 @@
 
 #PARAMETERS
 #Registry docker host IP
-$IP=$1
+IP=$1
+USERNAME=registry
 
 yum update
 
@@ -27,13 +28,6 @@ openssl req \
   -newkey rsa:4096 -nodes -sha256 -keyout /certs/domain.key \
   -x509 -days 3650 -out /certs/domain.crt
 
-#Start registry with certificates
-sudo docker run -d -p 5000:5000 --restart=always --name registry \
-  -v /certs:/certs \
-  -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt \
-  -e REGISTRY_HTTP_TLS_KEY=/certs/domain.key \
-  registry:2
-
 #Add certificates to docker trusted certificates
 mkdir -p /etc/docker/certs.d/$IP:5000
 cp -f /certs/domain.key /etc/docker/certs.d/$IP:5000/ca.key
@@ -45,3 +39,35 @@ service docker reload
 
 #TEST ME
 #docker pull 10.2.15.10:5000/busybox
+
+#Setting up authentification
+#Random password
+PASSWORD="#$(openssl rand -base64 32)"
+mkdir /auth
+#Generate password file
+docker run \
+  --name DeleteMe-Gen-registry-password \
+  --entrypoint htpasswd \
+  registry:2 -Bbn $USERNAME $PASSWORD > /auth/htpasswd
+#Protect password
+chmod -R 750 /auth
+
+docker rm --force DeleteMe-Gen-registry-password
+
+#Start registry with certificates and basic auth
+docker run -d \
+  -p 5000:5000 \
+  --restart=always \
+  --name registry \
+  -v /auth:/auth \
+  -e "REGISTRY_AUTH=htpasswd" \
+  -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" \
+  -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd \
+  -v /certs:/certs \
+  -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt \
+  -e REGISTRY_HTTP_TLS_KEY=/certs/domain.key \
+  registry:2
+  
+  echo "credentilals : "
+  echo "username : " $USERNAME
+  echo "Password : " $PASSWORD
