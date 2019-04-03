@@ -32,6 +32,7 @@ mkdir -p /etc/docker/certs.d/$IP:5000
 cp -f /certs/domain.key /etc/docker/certs.d/$IP:5000/ca.key
 cp -f /certs/domain.crt /etc/docker/certs.d/$IP:5000/ca.crt
 cp -f /certs/domain.crt /etc/docker/certs.d/$IP:5000/ca.cert
+chmod -R 750 /etc/docker/certs.d
 
 #reload docker daemon to use the certificate
 service docker reload
