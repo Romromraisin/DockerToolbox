@@ -1,7 +1,7 @@
 #Auto certificate setup for docker
 
 #Genrerate certificates
-curl -LO https://raw.githubusercontent.com/Romromraisin/Dockertemplates/master/portainer/gen_cert.sh
+curl -LO https://raw.githubusercontent.com/Romromraisin/DockerToolbox/master/portainer/gen_cert.sh
 bash gen_cert.sh
 
 #Move clients certificates
