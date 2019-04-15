@@ -5,7 +5,7 @@
 #PARAMETERS
 #Pick a distribution
 #Supported : centos; ubuntu
-$DISTRO=$1
+DISTRO=$1
 
 #UBUNTU
 if [ $DISTRO -eq "ubuntu" ]; then
