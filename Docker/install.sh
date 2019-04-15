@@ -8,7 +8,7 @@
 DISTRO=$1
 
 #UBUNTU
-if [ $DISTRO -eq "ubuntu" ]; then
+if [ "$DISTRO" == "ubuntu" ]; then
 	#Install prerequisits
 	apt update
 	apt install apt-transport-https ca-certificates curl software-properties-common -y
@@ -20,7 +20,7 @@ if [ $DISTRO -eq "ubuntu" ]; then
 	apt install docker-ce -y
 
 #CENTOS	
-elif [ $DISTRO -eq "centos" ]; then
+elif [ "$DISTRO" == "centos" ]; then
 	yum install -y yum-utils device-mapper-persistent-data lvm2
 	yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 	yum install docker-ce docker-ce-cli containerd.io
