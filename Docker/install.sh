@@ -2,6 +2,9 @@
 #Install docker-ce
 #sudo bash install.sh "ubuntu"
 
+set -e
+# Any subsequent(*) commands which fail will cause the shell script to exit immediately
+
 #PARAMETERS
 #Pick a distribution
 #Supported : centos; ubuntu
@@ -24,8 +27,8 @@ if [ "$DISTRO" == "ubuntu" ]; then
 #CENTOS	
 elif [ "$DISTRO" == "centos" ]; then
 	yum install -y yum-utils device-mapper-persistent-data lvm2
-	yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-	yum install docker-ce docker-ce-cli containerd.io
+	yum-config-manager -y --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+	yum install -y docker-ce docker-ce-cli containerd.io
 	systemctl start docker
 	#Start Docker at boot
 	systemctl enable docker

@@ -1,6 +1,9 @@
 #!/bin/bash
 #Docker bench php
 
+set -e
+# Any subsequent(*) commands which fail will cause the shell script to exit immediately
+
 #Usage .\bensh.sh $action $startNum $endNum
 #$action : add or del to add or remove containers containers
 #$startNum : Start Number

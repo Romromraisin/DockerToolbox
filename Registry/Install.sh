@@ -2,6 +2,9 @@
 #Install a docker registry on CentOS 7 docker host
 #Get your clients certs in /certs
 
+set -e
+# Any subsequent(*) commands which fail will cause the shell script to exit immediately
+
 #PARAMETERS
 #Registry docker host IP
 IP=$1
