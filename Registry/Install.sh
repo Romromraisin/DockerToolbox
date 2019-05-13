@@ -57,6 +57,9 @@ chmod -R 750 /auth
 
 docker rm --force DeleteMe-Gen-registry-password
 
+#Create volume
+docker volume create registry_data
+
 #Start registry with certificates and basic auth
 docker run -d \
   -p 5000:5000 \
@@ -67,6 +70,7 @@ docker run -d \
   -e "REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm" \
   -e REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd \
   -v /certs:/certs \
+  -v registry_data:/var/lib/registry \
   -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/domain.crt \
   -e REGISTRY_HTTP_TLS_KEY=/certs/domain.key \
   registry:2
