@@ -1,3 +1,4 @@
+#!/bin/bash
 #Install a portainer container on local host and connect with socket
 
 set -e
